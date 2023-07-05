@@ -51,6 +51,6 @@ def success_banner(msg: str):
   Args:
       msg (str): The message to log
   """
-  raw("=" * len(msg) + 40)
+  raw("=" * (len(msg) + 40))
   success(msg)
-  raw("=" * len(msg) + 40)
+  raw("=" * (len(msg) + 40))
