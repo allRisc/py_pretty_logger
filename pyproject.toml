@@ -22,13 +22,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py_pretty_logger"
-version = "1.0.0b3"
+version = "1.0.0"
 description = "A package which makes python logging prettier"
 readme = "README.md"
 authors = [{name = "Benjamin Davis", email = "allrisc.dev@gmail.com"}]
 license = {file = "LICENSE"}
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",
