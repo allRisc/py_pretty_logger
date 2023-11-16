@@ -48,7 +48,6 @@ class SimpleFormatter(logging.Formatter):
         return strip_ansi_escape(formatter.format(record))
 
 
-
 class PrettyFormatter(SimpleFormatter):
     """A formatter which adds color to the different log levels"""
 

@@ -49,5 +49,4 @@ Homepage = "https://github.com/allRisc/py_pretty_logger"
 Documentation = "https://github.com/allRisc/py_pretty_logger/blob/main/README.md"
 
 [project.optional-dependencies]
-dev = ["bumpver", "flake8", "mypy"]
-deploy = ["twine", "build"]
+dev = ["flake8", "mypy", "tox", "pytest"]
