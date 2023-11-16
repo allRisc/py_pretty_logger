@@ -1,0 +1,53 @@
+#####################################################################################
+# A package which makes python logging prettier
+# Copyright (C) 2023  Benjamin Davis
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; If not, see <https://www.gnu.org/licenses/>.
+#####################################################################################
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py_pretty_logger"
+version = "1.0.0b2"
+description = "A package which makes python logging prettier"
+readme = "README.md"
+authors = [{name = "Benjamin Davis", email = "allrisc.dev@gmail.com"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Logging",
+    "Topic :: Utilities",
+]
+keywords = ["logging", "pretty", "pretty-print", "pretty-printing", "pretty-printer", "pretty-printers"]
+requires-python = ">=3.7"
+
+[project.urls]
+Homepage = "https://github.com/allRisc/py_pretty_logger"
+Documentation = "https://github.com/allRisc/py_pretty_logger/blob/main/README.md"
+
+[project.optional-dependencies]
+dev = ["bumpver", "flake8", "mypy"]
+deploy = ["twine", "build"]

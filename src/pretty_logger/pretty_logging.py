@@ -1,6 +1,6 @@
 #####################################################################################
 # A package which makes python logging prettier
-# Copyright (C) 2023  RISCY-Lib Contributors
+# Copyright (C) 2023  Benjamin Davis
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
 # License along with this library; If not, see <https://www.gnu.org/licenses/>.
 #####################################################################################
 
-import py_pretty_logger.full_logger as logging
+import pretty_logger.full_logger as logging
 
 import re
 
