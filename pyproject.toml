@@ -22,7 +22,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "py_pretty_logger"
-version = "1.0.0b2"
+version = "1.0.0b3"
 description = "A package which makes python logging prettier"
 readme = "README.md"
 authors = [{name = "Benjamin Davis", email = "allrisc.dev@gmail.com"}]
