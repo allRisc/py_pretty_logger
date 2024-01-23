@@ -17,13 +17,11 @@
 #####################################################################################
 
 from __future__ import annotations
-from typing import Mapping
+from typing import Any
 
-import sys
 import re
 
 import logging
-from logging import *  # noqa: F401, F403 This is needed to replace logging imports
 from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 
@@ -38,190 +36,60 @@ logging.addLevelName(VERBOSE, "VERBOSE")
 logging.addLevelName(RAW_LOG, "RAW")
 logging.addLevelName(SUCCESS, "SUCCESS")
 
-if sys.version_info[1] > 7:  # Python 3.8+
-  def raw(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message without any additional information
 
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        stacklevel (int, optional): The stack level. Defaults to 1.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      RAW_LOG,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      stacklevel=stacklevel,
-      extra=extra
-    )
+####################################################################################################
+# Get a ExtendedLogger
+####################################################################################################
+def getLogger(lname: str) -> ExtendedLogger:
+  logging.setLoggerClass(ExtendedLogger)
 
-  def verbose(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message using "VERBOSE" information
+  logger = logging.getLogger(lname)
 
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        stacklevel (int, optional): The stack level. Defaults to 1.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      VERBOSE,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      stacklevel=stacklevel,
-      extra=extra
-    )
+  if not isinstance(logger, ExtendedLogger):
+    raise RuntimeError("Logger is not an instance of ExtendedLogger")
 
-  def success(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message using "SUCCESS" information
-
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        stacklevel (int, optional): The stack level. Defaults to 1.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      SUCCESS,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      stacklevel=stacklevel,
-      extra=extra
-    )
-
-else:  # Python 3.7 and below
-  def raw(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message without any additional information
-
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      RAW_LOG,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      extra=extra
-    )
-
-  def verbose(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message using "VERBOSE" information
-
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      VERBOSE,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      extra=extra
-    )
-
-  def success(
-        msg: object,
-        *args: object,
-        exc_info: logging._ExcInfoType = None,
-        stack_info: bool = False,
-        stacklevel: int = 1,
-        extra: Mapping[str, object] | None = None
-      ) -> None:
-    """Logs the output fo the message using "SUCCESS" information
-
-    Args:
-        msg (object): The message to log
-        *args (object): The arguments to pass to the message
-        exc_info (logging._ExcInfoType, optional): The exception information. Defaults to None.
-        stack_info (bool, optional): Whether to include stack information. Defaults to False.
-        extra (Mapping[str, object], optional): Any extra information to log. Defaults to None.
-    """
-    logging.log(
-      SUCCESS,
-      msg,
-      *args,
-      exc_info=exc_info,
-      stack_info=stack_info,
-      extra=extra
-    )
+  return logger
 
 
 ####################################################################################################
-# New logging functions
+# Extended Logging
 ####################################################################################################
-def success_banner(msg: str):
-  """Logs the output of the message using "SUCCESS" information with
-  raw bars above and below
+class ExtendedLogger(logging.Logger):
 
-  Args:
-      msg (str): The message to log
-  """
-  raw("=" * (len(msg) + 40))
-  success(msg)
-  raw("=" * (len(msg) + 40))
+  def verbose(self, msg: Any, *args, **kwargs) -> None:
+    """Logs a message with level VERBOSE on this logger.
+    The arguements are interpretted as for debug()
+    """
+    self.log(VERBOSE, msg, *args, **kwargs)
+
+  def raw(self, msg: Any, *args, **kwargs) -> None:
+    """Logs a message with level RAW_LOG on this logger.
+    The arguements are interpretted as for debug()
+    """
+    self.log(RAW_LOG, msg, *args, **kwargs)
+
+  def success(self, msg: Any, *args, **kwargs) -> None:
+    """Logs a message with level SUCCESS on this logger.
+    The arguements are interpretted as for debug()
+    """
+    self.log(SUCCESS, msg, *args, **kwargs)
+
+  def success_banner(self, msg: str):
+    """Logs the output of the message using "SUCCESS" information with
+    raw bars above and below
+
+    Args:
+        msg (str): The message to log
+    """
+    self.raw("=" * (len(msg) + 40))
+    self.success(msg)
+    self.raw("=" * (len(msg) + 40))
 
 
 ####################################################################################################
 # New logging formatters
 ####################################################################################################
-class SimpleFormatter(logging.Formatter):
+class ExtendedFormatter(logging.Formatter):
   """A simple formatter which does not add color to the logging messages.
   Mainly used as the formatter for file outputs
   """
@@ -233,13 +101,13 @@ class SimpleFormatter(logging.Formatter):
       return record.getMessage()
 
 
-class PrettyFormatter(SimpleFormatter):
+class ColoredFormatter(ExtendedFormatter):
   """A formatter which adds color to the different log levels"""
 
   GREY = "\x1b[38;10m"
   BLUE = "\x1b[34;10m"
   PURPLE = "\x1b[95;10m"
-  GREEN = "\x1b[36;10m"
+  GREEN = "\x1b[32;10m"
   YELLOW = "\x1b[33;10m"
   RED = "\x1b[31;10m"
   BOLD_RED = "\x1b[31;1m"
