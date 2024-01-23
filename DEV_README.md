@@ -13,9 +13,10 @@ Releases are published automatically when a tag is pushed to GitHub.
   export RELEASE=x.x.x
 
   # Create tags
+  git add -A
   git commit --allow-empty -m "Release $RELEASE"
   git tag -a $RELEASE -m "Version $RELEASE"
 
   # Push
-  git push --tags
+  git push --follow-tags
 ```
