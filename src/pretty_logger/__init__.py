@@ -41,9 +41,14 @@ logging.addLevelName(SUCCESS, "SUCCESS")
 # Get a ExtendedLogger
 ####################################################################################################
 def getLogger(lname: str) -> ExtendedLogger:
-    logging.setLoggerClass(ExtendedLogger)
+  logging.setLoggerClass(ExtendedLogger)
 
-    return logging.getLogger(lname)
+  logger = logging.getLogger(lname)
+
+  if not isinstance(logger, ExtendedLogger):
+    raise RuntimeError("Logger is not an instance of ExtendedLogger")
+
+  return logger
 
 
 ####################################################################################################

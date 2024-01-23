@@ -2,6 +2,8 @@ import pretty_logger as logging
 
 
 def test_import():
-  logging.raw("raw")
+  logger = logging.getLogger("test_import")
 
-  logging.debug("debug")
+  logger.raw("raw")
+
+  logger.debug("debug")
