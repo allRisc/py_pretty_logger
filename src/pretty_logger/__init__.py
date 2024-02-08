@@ -24,6 +24,8 @@ import re
 import logging
 from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
 
+import copy
+
 
 ####################################################################################################
 # New logging levels
@@ -94,7 +96,24 @@ class ExtendedFormatter(logging.Formatter):
   Mainly used as the formatter for file outputs
   """
 
+  def __init__(
+        self,
+        fmt: str | None = None,
+        datefmt: str | None = None,
+        style: _FormatStyle = "%",
+        validate: bool = True,
+        strip: bool = False,
+        *,
+        defaults: Mapping[str, Any] | None = None
+      ):
+    super().__init__(fmt, datefmt, style, validate, defaults=defaults)
+    self.strip: bool = strip
+
   def format(self, record: logging.LogRecord) -> str:
+      if self.strip:
+        record = copy.deepcopy(record)
+        record.msg = _strip_ansi_escape(record.msg)
+
       if record.levelno != RAW_LOG:
         return super().format(record)
 
@@ -126,10 +145,8 @@ class ColoredFormatter(ExtendedFormatter):
   def format(self, record: logging.LogRecord) -> str:
     if record.levelno in self.COLORS:
       return self.COLORS[record.levelno] + super().format(record) + self.RESET
-    elif record.levelno != RAW_LOG:
-      return super().format(record)
 
-    return record.getMessage()
+    return super().format(record)
 
 
 ####################################################################################################
