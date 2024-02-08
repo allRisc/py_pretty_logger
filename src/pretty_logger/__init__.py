@@ -101,12 +101,11 @@ class ExtendedFormatter(logging.Formatter):
         fmt: str | None = None,
         datefmt: str | None = None,
         style: logging._FormatStyle = "%",
-        validate: bool = True,
         strip: bool = False,
         *,
-        defaults: Mapping[str, Any] | None = None
+        **kwargs
       ):
-    super().__init__(fmt, datefmt, style, validate, defaults=defaults)
+    super().__init__(fmt, datefmt, style, **kwargs)
     self.strip: bool = strip
 
   def format(self, record: logging.LogRecord) -> str:
