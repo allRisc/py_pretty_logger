@@ -17,7 +17,7 @@
 #####################################################################################
 
 from __future__ import annotations
-from typing import Any
+from typing import Any, Mapping
 
 import re
 
@@ -100,7 +100,7 @@ class ExtendedFormatter(logging.Formatter):
         self,
         fmt: str | None = None,
         datefmt: str | None = None,
-        style: _FormatStyle = "%",
+        style: logging._FormatStyle = "%",
         validate: bool = True,
         strip: bool = False,
         *,
