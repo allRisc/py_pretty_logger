@@ -102,7 +102,6 @@ class ExtendedFormatter(logging.Formatter):
         datefmt: str | None = None,
         style: logging._FormatStyle = "%",
         strip: bool = False,
-        *,
         **kwargs
       ):
     super().__init__(fmt, datefmt, style, **kwargs)
