@@ -17,12 +17,13 @@
 #####################################################################################
 
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.8.8,<0.9.0"]
+build-backend = "uv_build"
+
 
 [project]
 name = "py_pretty_logger"
-version = "2.1.0"
+version = "2.2.0a0"
 description = "A package which makes python logging prettier"
 readme = "README.md"
 authors = [{name = "Benjamin Davis", email = "allrisc.dev@gmail.com"}]
@@ -36,17 +37,123 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Logging",
     "Topic :: Utilities",
 ]
 keywords = ["logging", "pretty", "pretty-print", "pretty-printing", "pretty-printer", "pretty-printers"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 
 [project.urls]
 Homepage = "https://github.com/allRisc/py_pretty_logger"
 Documentation = "https://github.com/allRisc/py_pretty_logger/blob/main/README.md"
 
-[project.optional-dependencies]
-dev = ["flake8", "mypy", "tox", "pytest"]
+[dependency-groups]
+dev = [
+    "ruff>=0.12.8",
+    "tox>=4.25.0",
+    "tox-uv>=1.13.1",
+]
+docs=[
+    "sphinx>=5.3.0",
+    "sphinx-rtd-theme>=2.0.0",
+]
+tests=[
+    "pytest>=7.4.4",
+]
+typing=[
+    "mypy>=1.4.1",
+]
+
+[tool.uv]
+default-groups = ["dev", "docs", "tests", "typing"]
+
+[tool.uv.build-backend]
+module-name = "pretty_logger"
+
+[tool.mypy]
+warn_return_any = true
+
+python_version = "3.8"
+
+files = ["src"]
+
+pretty = true
+
+
+[tool.pyright]
+pythonVersion = "3.8"
+include = ["src"]
+typeCheckingMode = "basic"
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+
+target-version = "py38"
+show-fixes = true
+
+src = ["src"]
+exclude = ["tests/**.py"]  # TODO: Update to include all test files
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+    "B",  # flake8-bugbear
+    "E",  # pycodestyle error
+    "F",  # pyflakes
+    "I",  # isort
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warning
+]
+ignore = [
+    "UP038",  # keep isinstance tuple
+]
+
+[tool.tox]
+env_list = [
+    "py3.13", "py3.12", "py3.11", "py3.10", "py3.9", "py3.8",
+    "style",
+    "typing",
+    # "docs",
+]
+
+[tool.tox.env_run_base]
+description = "pytest on latest dependency versions"
+runner = "uv-venv-lock-runner"
+package = "wheel"
+wheel_build_env = ".pkg"
+constrain_package_deps = true
+use_frozen_constraints = true
+dependency_groups = ["tests"]
+
+commands = [[
+    "pytest", "-v", "--tb=short", "--basetemp={env_tmp_dir}",
+    {replace = "posargs", default = [], extend = true},
+]]
+
+[tool.tox.env.style]
+description = "run linting and style checks on code"
+dependency_groups = ["dev"]
+skip_install = true
+commands = [["ruff", "check"]]
+
+[tool.tox.env.typing]
+description = "run static type checkers"
+dependency_groups = ["typing"]
+commands = [
+    ["mypy"],
+]
+
+[tool.tox.env.docs]
+description = "build docs"
+dependency_groups = ["docs"]
+commands = [["sphinx-build", "-E", "-W", "-b", "dirhtml", "docs/source", "docs/_build/dirhtml"]]

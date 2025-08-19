@@ -17,15 +17,12 @@
 #####################################################################################
 
 from __future__ import annotations
-from typing import Any
-
-import re
-
-import logging
-from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 import copy
-
+import logging
+import re
+from logging import CRITICAL, DEBUG, ERROR, INFO, WARNING
+from typing import Any
 
 ####################################################################################################
 # New logging levels
